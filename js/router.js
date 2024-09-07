@@ -1,23 +1,26 @@
-const routes = {
-  "/": "Home",
-  "/camunda": "Camunda",
-  "/fixed-3": "Git Submodule",
-};
+$(document).ready(function () {
+  const routes = {
+    "/": "Home",
+    "/camunda": "Camunda",
+    "/fixed-3": "Fixed-3",
+  };
 
-function router() {
-  let path = window.location.hash.slice(1) || "/";
-  const contentDiv = document.getElementById("content");
-  contentDiv.innerHTML = `<h2>${routes[path]}</h2><p>This is the ${routes[path]} page content.</p>`;
-  updateDocumentation(path);
-}
+  function router() {
+    let path = window.location.hash.slice(1) || "/";
+    $("#content").html(
+      `<h2>${routes[path]}</h2><p>This is the ${routes[path]} page content.</p>`
+    );
 
-function handleNavigation(e) {
-  if (e.target.tagName === "A") {
-    e.preventDefault();
-    window.location.hash = e.target.getAttribute("href");
+    // Disparar el evento routeChanged para el componente de documentación
+    $(window).trigger("routeChanged", [path]);
   }
-}
 
-document.querySelector("nav").addEventListener("click", handleNavigation);
-window.addEventListener("hashchange", router);
-window.addEventListener("load", router);
+  function handleNavigation(e) {
+    e.preventDefault();
+    window.location.hash = $(this).attr("href");
+  }
+
+  $("nav").on("click", "a", handleNavigation);
+  $(window).on("hashchange", router);
+  $(window).on("load", router);
+});
