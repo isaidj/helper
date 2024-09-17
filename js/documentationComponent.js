@@ -24,10 +24,24 @@ $(document).ready(function () {
       `,
   }).appendTo("body");
 
-  // Create and append iframe
+  // Create and append iframe with initial hidden state
   const $iframe = $("<iframe>", {
     class: "doc-iframe",
     title: "Documentation",
+    css: {
+      "box-shadow": "0 0 10px rgba(0, 0, 0, 0.1)",
+      border: "none",
+      "border-radius": "4px",
+      // transition: "all 0.3s ease-in-out",
+      width: "0",
+      height: "100%",
+      position: "fixed",
+      top: "0",
+      right: "0",
+      opacity: "0",
+      visibility: "hidden",
+      "z-index": "1000",
+    },
   }).appendTo("body");
 
   function updateDocumentation(path) {
@@ -45,10 +59,11 @@ $(document).ready(function () {
   }
 
   function updateIframeStyle() {
-    $iframe.css(
-      "width",
-      isDrawerOpen ? (isExpanded ? "100%" : `${iframeWidth}px`) : "0"
-    );
+    $iframe.css({
+      width: isDrawerOpen ? (isExpanded ? "100%" : `${iframeWidth}px`) : "0",
+      opacity: isDrawerOpen ? 1 : 0,
+      visibility: isDrawerOpen ? "visible" : "hidden",
+    });
   }
 
   function sendMessageToIframe(type, value) {

@@ -1,14 +1,18 @@
 $(document).ready(function () {
   const routes = {
-    "/": "Home",
-    "/camunda": "Camunda",
-    "/fixed-3": "Fixed-3",
+    "/home": "inicio",
+    "/gestion-presupuestal": "modulo-gestion",
+    "/gestion-contable": "administracion-contable",
   };
 
   function router() {
     let path = window.location.hash.slice(1) || "/";
     $("#content").html(
-      `<h2>${routes[path]}</h2><p>This is the ${routes[path]} page content.</p>`
+      ` <img
+        src="./images/${routes[path]}.png"
+        alt="imagen1"
+        style="width: 100%; height: 100%"
+      />`
     );
 
     // Disparar el evento routeChanged para el componente de documentación
