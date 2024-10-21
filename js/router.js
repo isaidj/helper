@@ -15,6 +15,9 @@ $(document).ready(function () {
       />`
     );
 
+    // Cerrar el iframe
+    closeIframe();
+
     // Disparar el evento routeChanged para el componente de documentación
     $(window).trigger("routeChanged", [path]);
   }
@@ -22,6 +25,13 @@ $(document).ready(function () {
   function handleNavigation(e) {
     e.preventDefault();
     window.location.hash = $(this).attr("href");
+  }
+
+  function closeIframe() {
+    // Asumimos que la función toggleDrawer está disponible globalmente
+    if (typeof window.toggleDrawer === "function" && isDrawerOpen) {
+      window.toggleDrawer();
+    }
   }
 
   $("nav").on("click", "a", handleNavigation);

@@ -7,7 +7,7 @@ $(document).ready(function () {
   const iframeWidth = 600;
 
   // State
-  let isDrawerOpen = false;
+  window.isDrawerOpen = false;
   let isExpanded = false;
 
   // Create and append toggle button
@@ -15,13 +15,13 @@ $(document).ready(function () {
     class: "doc-toggle-button",
     "aria-label": "Toggle Documentation Drawer",
     html: `
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
-              <path d="M8 7h6"></path>
-              <path d="M8 11h8"></path>
-              <path d="M8 15h6"></path>
-          </svg>
-      `,
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+          <path d="M8 7h6"></path>
+          <path d="M8 11h8"></path>
+          <path d="M8 15h6"></path>
+      </svg>
+    `,
   }).appendTo("body");
 
   // Create and append iframe with initial hidden state
@@ -32,7 +32,6 @@ $(document).ready(function () {
       "box-shadow": "0 0 10px rgba(0, 0, 0, 0.1)",
       border: "none",
       "border-radius": "4px",
-      // transition: "all 0.3s ease-in-out",
       width: "0",
       height: "100%",
       position: "fixed",
@@ -50,19 +49,24 @@ $(document).ready(function () {
     $iframe.attr("src", `${SRC}/${route}`);
   }
 
-  function toggleDrawer() {
-    isDrawerOpen = !isDrawerOpen;
+  // Make toggleDrawer global
+  window.toggleDrawer = function () {
+    window.isDrawerOpen = !window.isDrawerOpen;
     updateIframeStyle();
-    sendMessageToIframe("toggleDrawer", isDrawerOpen);
+    sendMessageToIframe("toggleDrawer", window.isDrawerOpen);
     sendMessageToIframe("token", TOKEN);
     sendMessageToIframe("iframeWidth", iframeWidth);
-  }
+  };
 
   function updateIframeStyle() {
     $iframe.css({
-      width: isDrawerOpen ? (isExpanded ? "100%" : `${iframeWidth}px`) : "0",
-      opacity: isDrawerOpen ? 1 : 0,
-      visibility: isDrawerOpen ? "visible" : "hidden",
+      width: window.isDrawerOpen
+        ? isExpanded
+          ? "100%"
+          : `${iframeWidth}px`
+        : "0",
+      opacity: window.isDrawerOpen ? 1 : 0,
+      visibility: window.isDrawerOpen ? "visible" : "hidden",
     });
   }
 
@@ -82,7 +86,7 @@ $(document).ready(function () {
     if (event.originalEvent.origin !== SRC || !event.originalEvent.data) return;
     const { type, isOpen } = event.originalEvent.data;
     if (type === "drawerToggle") {
-      isDrawerOpen = isOpen;
+      window.isDrawerOpen = isOpen;
       updateIframeStyle();
     }
     if (type === "expandToggle") {
@@ -94,11 +98,11 @@ $(document).ready(function () {
   $(document).on("keydown", function (event) {
     if (event.key === "F1") {
       event.preventDefault();
-      toggleDrawer();
+      window.toggleDrawer();
     }
   });
 
-  $toggleButton.on("click", toggleDrawer);
+  $toggleButton.on("click", window.toggleDrawer);
 
   // Custom event for route changes
   $(window).on("routeChanged", function (event, newPath) {
