@@ -3,7 +3,7 @@
 $(document).ready(function () {
   // Constants
   const SRC = "http://localhost:3000"; // Ajusta esto según tu configuración
-  const TOKEN = "a5015e1f-c515-4cf9-b5ca-763dfb380773"; // Reemplaza con tu token real
+  const TOKEN = "1bca95bb-64c8-4724-90ff-17065efac630"; // Reemplaza con tu token real
   const iframeWidth = 600;
 
   // State
@@ -29,9 +29,6 @@ $(document).ready(function () {
     class: "doc-iframe",
     title: "Documentation",
     css: {
-      "box-shadow": "0 0 10px rgba(0, 0, 0, 0.1)",
-      border: "none",
-      "border-radius": "4px",
       width: "0",
       height: "100%",
       position: "fixed",
@@ -95,6 +92,16 @@ $(document).ready(function () {
     }
   });
 
+  // Add iframe load error handler
+  $iframe.on("error", function () {
+    console.error("Error al cargar el iframe.");
+  });
+
+  // Add iframe load event to ensure iframeWidth is set after load
+  $iframe.on("load", function () {
+    sendMessageToIframe("iframeWidth", iframeWidth);
+  });
+
   $(document).on("keydown", function (event) {
     if (event.key === "F1") {
       event.preventDefault();
@@ -111,5 +118,4 @@ $(document).ready(function () {
 
   // Initial setup
   updateDocumentation(window.location.hash.slice(1) || "/");
-  setTimeout(() => sendMessageToIframe("iframeWidth", iframeWidth), 1000);
 });
