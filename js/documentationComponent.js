@@ -1,7 +1,7 @@
 $(document).ready(function () {
   // Constants
-  // const SRC = "https://main.d34cc6cn7jf06y.amplifyapp.com/";
-  const SRC = "http://localhost:3000/";
+  const SRC = "https://main.d34cc6cn7jf06y.amplifyapp.com/";
+  // const SRC = "http://localhost:3000/";
   const TOKEN = "1bca95bb-64c8-4724-90ff-17065efac630";
   const collectionId = "1954a09c-0ad3-4a07-ad77-53e380e0d6a5";
   const iframeWidth = 600;
