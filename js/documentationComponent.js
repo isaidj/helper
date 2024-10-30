@@ -1,10 +1,11 @@
 $(document).ready(function () {
   // Constants
-  const SRC = "https://main.d34cc6cn7jf06y.amplifyapp.com/";
+  // const SRC = "https://main.d34cc6cn7jf06y.amplifyapp.com/";
+  const SRC = "http://localhost:3000/";
   const TOKEN = "1bca95bb-64c8-4724-90ff-17065efac630";
   const collectionId = "1954a09c-0ad3-4a07-ad77-53e380e0d6a5";
   const iframeWidth = 600;
-  let originsSRC = ["amplifyapp"];
+  let originsSRC = ["amplifyapp", "localhost"];
 
   // State
   window.isDrawerOpen = false;
@@ -103,6 +104,7 @@ $(document).ready(function () {
   function handleMessageEvent(event) {
     // Verificar el origen del mensaje
     bool = originsSRC.some((origin) => event.origin.includes(origin));
+
     if (!bool) {
       return;
     }
@@ -122,7 +124,7 @@ $(document).ready(function () {
     }
 
     try {
-      const { type, isOpen } = event.data;
+      const { type, messageContent, isOpen } = event.data;
 
       if (type === "drawerToggle") {
         window.isDrawerOpen = !window.isDrawerOpen;
@@ -130,6 +132,11 @@ $(document).ready(function () {
       } else if (type === "expandToggle") {
         isExpanded = isOpen;
         updateIframeStyle();
+      }
+      if (type === "openInternalLink") {
+        // window.open(messageContent);
+        console.log("Abriendo enlace interno:", messageContent);
+        window.location.replace(messageContent);
       }
     } catch (error) {
       console.error("Error processing message:", error);
