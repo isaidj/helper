@@ -136,7 +136,9 @@ $(document).ready(function () {
       if (type === "openInternalLink") {
         // window.open(messageContent);
         console.log("Abriendo enlace interno:", messageContent);
-        window.location.replace(messageContent);
+        const extractedPathname = messageContent.split("internal:")[1];
+        console.log("Extracted pathname:", extractedPathname);
+        // window.location.replace(messageContent);
       }
     } catch (error) {
       console.error("Error processing message:", error);
